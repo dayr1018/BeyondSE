@@ -52,6 +52,6 @@ People
 
 Steps:
 1.  Think it
-2.  Code it 
+1.  Code it 
 
 
