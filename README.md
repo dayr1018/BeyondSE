@@ -25,10 +25,33 @@ This is test.md
 
 *Italic*
 
-'''
+<pre><code>
 int main()
 {
-  printf("Hello SE\n");
+  while(1){Assignment;}
   return 0;
 }
-'''
+</code></pre>
+
+Color:
+*Red
+*Blue
+*Yello
+*Green
+
+Fruit:
++Apple
++Grape
++Plum
+
+People
+-SA
+-SK
+-GE
+-YR
+
+Steps:
+1. Think it.
+2. Code it. 
+
+
