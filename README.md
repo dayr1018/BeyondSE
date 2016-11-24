@@ -34,24 +34,24 @@ int main()
 </code></pre>
 
 Color:
-*Red
-*Blue
-*Yello
-*Green
+* Red
+* Blue
+* Yello
+* Green
 
 Fruit:
-+Apple
-+Grape
-+Plum
++ Apple
++ Grape
++ Plum
 
 People
--SA
--SK
--GE
--YR
+- SA
+- SK
+- GE
+- YR
 
 Steps:
-1. Think it.
-2. Code it. 
+1.  Think it.
+2.  Code it. 
 
 
