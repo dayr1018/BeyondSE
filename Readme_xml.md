@@ -9,3 +9,5 @@ How to use Ant (Team E)
 4. Put any html file into directory where "MD_HTML_Converter.jar" is located.
 
 5. When "MD_HTML_Converter.jar" is executed, write "*.html"(name of html file) on cmd, and it will check HTML grammar.
+
+6. Once check is done, you may put other html file name if you want to check another html file. If not, put any word and program will be finished.
