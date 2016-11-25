@@ -31,7 +31,10 @@ This is test.md
 
 *Italic*
 
-[1]: http://www.naver.com "Naver"
+~~~~
+codeblock & link
+[Naver](http://www.naver.com "Naver")
+~~~~~
 
 <pre><code>
 int main()
