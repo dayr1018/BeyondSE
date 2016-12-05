@@ -3,10 +3,6 @@
 
 Heading Test  
 =======
-
-Heading
-===ac
-
 #Heading
 
 Sub-Heading
