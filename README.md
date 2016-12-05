@@ -1,9 +1,9 @@
 # BeyondSE
 2016, HGU, SE, Team Project
 
-Heading Test  
+**Heading** Test  
 =======
-#Head**ing**
+#Heading
 
 Sub-Heading
 ---
