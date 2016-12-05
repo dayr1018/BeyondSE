@@ -8,7 +8,7 @@ Heading Test
 Sub-Heading
 ---
 
-##Sub-Heading
+##Sub-Heading#
 
 This is test.md  
 This is test.md
