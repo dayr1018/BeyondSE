@@ -3,12 +3,12 @@
 
 Heading Test  
 =======
-#Heading
+#Head**ing**
 
 Sub-Heading
 ---
 
-##Sub-Heading#
+##Sub-Heading
 
 This is test.md  
 This is test.md
