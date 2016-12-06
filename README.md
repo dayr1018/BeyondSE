@@ -48,7 +48,7 @@ This is test.md
 
 *Italic*
 
-~
+~~
 int main()
 {
   return thanks;
