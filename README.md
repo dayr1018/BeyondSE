@@ -48,12 +48,12 @@ This is test.md
 
 *Italic*
 
-~~~ #include<stdio.h>
+~~~ 
+#include<bible.h>
 int main()
 {
   return thanks;
 }
-int func(){}; 
 ~~~~~~~~~~~
 
 <pre><code>int func();
