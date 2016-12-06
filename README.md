@@ -48,14 +48,12 @@ This is test.md
 
 *Italic*
 
-~~~
+~~~ #include<stdio.h>
 int main()
 {
   return thanks;
 }
-codeblock & link
-[Naver](http://www.naver.com "Naver")
-~~~~~~~~~~~
+int func(){}~~~~~~~~~~~
 
 <pre><code>int func();
 int main()
