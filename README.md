@@ -55,7 +55,7 @@ int main()
 }
 codeblock & link
 [Naver](http://www.naver.com "Naver")
-~~~~~~
+~~~~~~~
 
 <pre><code>int func();
 int main()
