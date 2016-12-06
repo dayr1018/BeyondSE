@@ -53,7 +53,7 @@ codeblock & link
 [Naver](http://www.naver.com "Naver")
 ~~~~~
 
-<pre><code>
+<pre><code>int func();
 int main()
 {
   while(1){Assignment;}
