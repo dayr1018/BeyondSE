@@ -53,7 +53,7 @@ int main()
 {
   return thanks;
 }
-int func(){}~~~~~~~~~~~
+int func(){} ~~~~~~~~~~~
 
 <pre><code>int func();
 int main()
