@@ -49,6 +49,10 @@ This is test.md
 *Italic*
 
 ~~~~
+int main()
+{
+  return thanks;
+}
 codeblock & link
 [Naver](http://www.naver.com "Naver")
 ~~~~~
@@ -83,6 +87,6 @@ Steps:
 2.  Code it 
 
 Blockquote
->I like you
+>I like you  
 >You like me
 
