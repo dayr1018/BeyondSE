@@ -1,8 +1,10 @@
-#[Naver](http://naver.com)
+#\*literal asterisks\*
 
 1. Item 1[Naver](http://naver.com)
 2. Item 2
 3. Item 3
+
+\*literal asterisks\*
 
 # BeyondSE 
 ***********
