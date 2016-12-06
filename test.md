@@ -5,29 +5,29 @@ int main()
   while(1){Assignment;}
   return 0;
  }
- ~~~~~
+~~~~~
  
- Heading Test
- =====
+Heading Test
+=====
  
- This is test file 
- This is test file
+This is test file 
+This is test file
  
- This is double test  
- This is double test
+This is double test  
+This is double test
  
- Color:
+Color:
  * Red
  * Blue
  * Yello
  * Green
  
- Fruit:
+Fruit:
  + Apple
  + Grape
  + Plum
  
- People
+People:
  - SA
  - SK
  - GE
