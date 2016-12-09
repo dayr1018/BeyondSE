@@ -31,8 +31,7 @@
 
 	<target name = "test_compile" depends = "compile" 
 			description = "Compile Test Java code" >
-			<javac srcdir = "testsrc" destdir = "test/testclasses"classpathref = "classpath.test">
-			</javac>
+			<javac srcdir = "testsrc" destdir = "test/testclasses" classpathref = "classpath.test" />
 	</target>
 
 	<target name = "test" depends = "test_compile"
@@ -56,10 +55,8 @@
 				<classpath path="test/testclasses" />
 				<classpath path="lib/junit-4.12.jar" />
 				<classpath path="lib/hamcrest-core-1.3.jar" />
-
 				<formatter type="plain" usefile="false" />
-
-				<test name="Test">
+				<test name="ExecuteCommandReader">
 				</test>
 			</junit>
 		</jacoco:coverage>
@@ -67,8 +64,6 @@
 		<jacoco:coverage>
 			<java classname="ExecuteCommandReader" fork="true">
 				<classpath path="test/testclasses" />
-				<classpath path="lib/junit-4.12.jar" />
-				<classpath path="lib/hamcrest-core-1.3.jar" />
 			</java>
 		</jacoco:coverage>
 	</target>
@@ -88,12 +83,16 @@
         <jacoco:report>
             <executiondata>
                 <file file="./jacoco.exec" />
-            </executiondata>
+            </executiondata>execute test.md
+
 
             <structure name="Code Coverage">
                 <classfiles>
-                    <zipfileset src="lib/jacocoant.jar"/>
-                </classfiles>
+					<fileset dir="test/testclasses" />
+				</classfiles>
+				<sourcefiles>
+					<fileset dir="testsrc" />
+				</sourcefiles>
             </structure>
             <html destdir="test/jacocoreports/coverage" />
         </jacoco:report>

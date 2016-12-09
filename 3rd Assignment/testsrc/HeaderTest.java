@@ -1,8 +1,31 @@
 
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+
+public class HeaderTest {
+	Header header;
+	
+	@Before
+	public void setup(){
+		header = new Header("# Head");
+	}
+	
+	@Test
+	public void test() {
+		assertEquals("<h2>" +" Head"+ "</h2>",header.getString());
+	}
+
+}
+
+/*
+ * 
 
 public class Header extends Node{
 
-	//public Header(){}
+	public Header(){}
 
 	public Header(String str)
 	{
@@ -39,3 +62,5 @@ public class Header extends Node{
          return ("<h1>" + string.toString() + "</h1>");
     }
 }
+
+ * */
