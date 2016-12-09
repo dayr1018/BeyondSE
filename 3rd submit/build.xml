@@ -25,20 +25,14 @@
 	</target>
 
 	<target name = "compile" depends = "init" 
-			description = "Compile Java code">
-			<javac srcdir = "src" destdir = "build/classes"/>
-			<javac srcdir = "testsrc" destdir = "test/testclasses"/>
-			<fileset dir = "lib" defaultexcludes ="no">
-				<include name = "*.jar"/>
-			</fileset>
+			description = "Compile Java code" >
+			<javac srcdir = "src" destdir = "build/classes" classpathref = "classpath.test" />
 	</target>
 
-	<target name = "test_compile" depends = "compile"
-			description = "Compile Java test code">
-			<javac srcdir = "testsrc" destdir = "test/testclasses"/>
-			<fileset dir = "lib" defaultexcludes ="no">
-				<include name = "**/*.jar"/>
-			</fileset>
+	<target name = "test_compile" depends = "compile" 
+			description = "Compile Test Java code" >
+			<javac srcdir = "testsrc" destdir = "test/testclasses"classpathref = "classpath.test">
+			</javac>
 	</target>
 
 	<target name = "test" depends = "test_compile"
