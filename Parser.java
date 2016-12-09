@@ -3,95 +3,266 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class Parser{
+class MDParser{
 
-   ArrayList<String> buf = new ArrayList<String>();
-   Pattern pHeader = Pattern.compile("^[#]+[ A-Za-z#]*");
-   Pattern pEnd = Pattern.compile("^[ A-Za-z#.*]*[ ][ ]$");
-   //Pattern pSingleLine =
-   Pattern pMultiStart = Pattern.compile("<pre><code>[A-Za-z#.*() ]*|^[*][A-Za-z0-9 ]+$|^[+][A-Za-z0-9 ]+$|^[-][A-Za-z0-9 ]+$");
-   //Pattern pMultiStart = Pattern.compile("<pre><code>[A-Za-z#.*() ]*");
-   Pattern pMultiEnd = Pattern.compile("[A-Za-z#.* ]*</code></pre>");
-   Matcher mHeader, mEnd, mMultiStart, mMultiEnd;
-   int kind;
+	ArrayList<String> buf = new ArrayList<String>();
+	Pattern pHeaderA = Pattern.compile("^[#]+[ A-Za-z#-]*");
+	Pattern pHeaderB = Pattern.compile("[=]+[=]+[=]+|[-]+[-]+[-]+");
+	Pattern pDoubleSpace = Pattern.compile("^[ A-Za-z.*]*[ ][ ]$");
+	Pattern pCodeBlock = Pattern.compile("^[~]+[~]+[~]+$");
+	Pattern pBlockQuote = Pattern.compile("^[>][A-Za-z0-9 .*]*");
+	Pattern pList = Pattern.compile("^[*][A-Za-z0-9 .*]*|^[+][A-Za-z0-9 .*]*|^[-][A-Za-z0-9 .*]*");
+	Pattern pImage = Pattern.compile("!\\[[A-Za-z0-9.*]*\\]\\([A-Za-z0-9/:.]*\\)");
 
-   Parser(){kind = 0;}
+	Matcher mHeaderA, mHeaderB, mDoubleSpace, mCodeBlock, mBlockQuote, mList, mImage;
 
-   void parse(String fileName)
-   {
-      try
-      {
+	int mode;
 
-         FileReader fr = new FileReader(fileName);
-         BufferedReader br = new BufferedReader(fr);
+	private final static int BASIC = 0;
+	private final static int C_BLOCK = 1;
+	private final static int BLOCK_Q = 2;
+	private final static int LIST = 3;
 
-         String line = "";
-         for(int i = 0; (line = br.readLine())!=null; i++)
-         {
-            /*
-            mMultiStart = pMultiStart.matcher(line);
-            if(mMultiStart.find())
-            {
-               System.out.println(mMultiStart.group());
-            }
-            */
+	Document doc;
 
-            switch(kind)
-            {
-               case 0:
-                  mMultiStart = pMultiStart.matcher(line);
-                  if(mMultiStart.find())
-                  {
-                     //»õ·Î¿î multi lineÀ» buf¿¡ ÀúÀåÇÏ±â Àü¿¡ buf¿¡ ÀÖ´Â ¾Öµé ¸ðµÎ Ãâ·Â(³ªÁß¿£ ³ëµå¿¡ Àü´Þ)
-                     for(int j = 0; j < buf.size(); j++)
-                        System.out.println(buf.get(j) + "\t\t(single line)");
+	MDParser(){mode = BASIC;}
 
-                     buf.clear();
+	Document run(String fileName)
+	{
+		try
+		{
+			doc = new Document(fileName);
 
-                     buf.add(line);//buf.add(mMultiStart.group());
+			FileReader fr = new FileReader(fileName);
+			BufferedReader br = new BufferedReader(fr);
 
-                     kind = 1;
-                     break;
-                  }
-                  buf.add(line);
-                  break;
-               case 1:
-                  mMultiEnd = pMultiEnd.matcher(line);
-                  if(mMultiEnd.find())
-                  {
-                     buf.add(line);
-                     //multi line ³¡³µÀ¸¹Ç·Î ÀúÀåÇØ‡J´ø buf ¸ðµÎ Ãâ·Â(³ªÁß¿£ ³ëµå¿¡ Àü´Þ)
-                     for(int j = 0; j < buf.size(); j++)
-                        System.out.println(buf.get(j) + "\t\t(multi line)");
+			String line = "";
+			for(int i = 0; (line = br.readLine())!=null; i++)
+			{
+				mHeaderA = pHeaderA.matcher(line);
+				mHeaderB = pHeaderB.matcher(line);
+				mDoubleSpace = pDoubleSpace.matcher(line);
+				mCodeBlock = pCodeBlock.matcher(line);
+				mBlockQuote = pBlockQuote.matcher(line);
+				mList = pList.matcher(line);
+				mImage = pImage.matcher(line);
 
-                     buf.clear();
+				switch(mode)
+				{
+					case BASIC:
+						if(mHeaderA.find())
+						{
+							/*
+							for(int j = 0; j < buf.size(); j++)                    // ì¼ë°˜ ë¬¸ìžì—´ ë…¸ë“œ ìƒì„±ë˜ëŠ” ê³³
+								System.out.println(buf.get(j));
+							*/
 
-                     kind = 0;
-                     break;
-                  }
+							String str="";
+							for(int j = 0; j < buf.size(); j++)
+								str = str.concat(buf.get(j));
+							System.out.println(str);
+							Node node = new Node(str);
+							doc.addNode(node);
 
-                  buf.add(line);
-                  break;
-            }
+							System.out.println(mHeaderA.group() + "\t\tmHeaderA");          // í—¤ë” ë…¸ë“œ ìƒì„±ë˜ëŠ” ê³³
+							Header header = new Header(mHeaderA.group(), 2);
+							doc.addNode(header);
 
-            /*
-            mHeader = pHeader.matcher(line);
-            mEnd = pEnd.matcher(line);
+							buf.clear();
+						}
+						else if(mHeaderB.find())
+						{
+							/*
+							for(int j = 0; j < buf.size()-1; j++)                          // ì¼ë°˜ ë¬¸ìžì—´ ë…¸ë“œ ìƒì„±ë˜ëŠ” ê³³
+								System.out.println(buf.get(j));
+							*/
 
-            if(mHeader.find())
-               System.out.println(mHeader.group() + "\t\t(parsing - header)");
-            else if(mEnd.find())
-               System.out.println(mEnd.group() + "\t\t(parsing - end)");
-            else if(line.length() == 0)
-               System.out.println(line + "\t\t(parsing - end)");
-            else
-               System.out.println(line);
-            */
-         }
+							String str="";
+							for(int j = 0; j < buf.size()-1; j++)
+								str = str.concat(buf.get(j));
+							System.out.println(str);
+							Node node = new Node(str);
+							doc.addNode(node);
 
-         br.close();
-      }catch(IOException e){}
+							System.out.println(buf.get(buf.size()-1) + "\t\tmHeaderB");      // í—¤ë” ë…¸ë“œ ìƒì„±ë˜ëŠ” ê³³
+							Header header = new Header(buf.get(buf.size()-1), 2);
+							doc.addNode(header);
 
-   }
+							buf.clear();
+						}
+						else if(mImage.find())
+						{
+							String str="";                                           // ì¼ë°˜ ë¬¸ìžì—´ ìƒì„±
+							for(int j = 0; j < buf.size()-1; j++)
+								str = str.concat(buf.get(j));
+							System.out.println(str);
+							Node node = new Node(str);
+							doc.addNode(node);
+
+							System.out.println(line + "\t\tmImage");
+							Image image = new Image(line);
+							doc.addNode(image);
+
+							buf.clear();
+						}
+						else if(mDoubleSpace.find())
+						{
+							buf.add(line + "\n");
+						}
+						else if(line.length() == 0)
+						{
+							buf.add(line + "\n\n");
+						}
+						else if(mCodeBlock.find())
+						{
+							/*
+							for(int j = 0; j < buf.size(); j++)                    // ì¼ë°˜ ë¬¸ìžì—´ ë…¸ë“œ ìƒì„±ë˜ëŠ” ê³³
+								System.out.println(buf.get(j));
+							*/
+
+							String str="";
+							for(int j = 0; j < buf.size(); j++)
+								str = str.concat(buf.get(j));
+							System.out.println(str);
+							Node node = new Node(str);
+							doc.addNode(node);
+
+							buf.clear();
+							mode = C_BLOCK;
+							//System.out.println(mCodeBlock.group() + "\t\tmCodeBlock");
+						}
+						else if(mBlockQuote.find())
+						{
+							/*
+							for(int j = 0; j < buf.size(); j++)                 //  ì¼ë°˜ ë¬¸ìžì—´ ë…¸ë“œ ìƒì„± ë˜ëŠ” ê³³
+								System.out.println(buf.get(j));
+							*/
+
+							String str="";
+							for(int j = 0; j < buf.size(); j++)
+								str = str.concat(buf.get(j));
+							System.out.println(str);
+							Node node = new Node(str);
+							doc.addNode(node);
+
+							buf.clear();
+							mode = BLOCK_Q;
+							//System.out.println(mBlockQuote.group() + "\t\tmBlockQuote");
+						}
+						else if(mList.find())
+						{
+
+							/*
+							for(int j = 0; j < buf.size(); j++)         // ì¼ë°˜ ë¬¸ìžì—´ ë…¸ë“œ ìƒì„± ë˜ëŠ” ê³³
+								System.out.println(buf.get(j));
+							*/
+
+							String str="";
+							for(int j = 0; j < buf.size(); j++)
+								str = str.concat(buf.get(j));
+							System.out.println(str);
+							Node node = new Node(str);
+							doc.addNode(node);
+
+							buf.clear();
+
+							buf.add(line);
+							mode = LIST;
+						}
+						else
+						{
+							buf.add(line);
+						}
+
+						break;
+					case C_BLOCK:
+						if(mCodeBlock.find())
+						{
+							String str="";
+							/*
+							for(int j = 0; j < buf.size(); j++)    // Code Block ë…¸ë“œ ìƒì„± ë˜ëŠ” ê³³
+								System.out.println(buf.get(j));
+							*/
+							for(int j = 0; j < buf.size(); j++)    // Code Block ë…¸ë“œ ìƒì„± ë˜ëŠ” ê³³
+								str = str.concat("\n" +buf.get(j));  //
+							System.out.println(str);
+							CodeBlock codeBlock = new CodeBlock(str);
+							doc.addNode(codeBlock);
+
+
+							buf.clear();
+							mode = BASIC;
+							break;
+						}
+
+						buf.add(line);
+						break;
+					case BLOCK_Q:
+						break;
+					case LIST:
+					  if(!mList.find() || (line.length() == 0) )
+					  {
+							 String str="";
+							 String tmpstr = "";
+
+							 for(int j = 0; j < buf.size(); j++) {   // list ë…¸ë“œ ìƒì„± ë˜ëŠ” ê³³
+								tmpstr = buf.get(j);
+								tmpstr = tmpstr.substring(1);
+								str = str.concat("\n" + "<li>" + tmpstr + "</li>");
+							 }
+
+							 System.out.println(str);
+							 List list = new List(str);
+							 doc.addNode(list);
+
+							 buf.clear();
+
+							 buf.add("\n\t"+line);
+							 mode = BASIC;
+							 break;
+				  		}
+
+						buf.add(line);
+						break;
+
+					///////////
+					/*
+						if(!mList.find() || (line.length() == 0) )
+						{
+							String str="";
+
+							for(int j = 0; j < buf.size(); j++)    // list ë…¸ë“œ ìƒì„± ë˜ëŠ” ê³³						{
+								str = str.concat("\n" +buf.get(j)); //
+							System.out.println(str);
+							List list = new List(str);
+							doc.addNode(list);
+
+							buf.clear();
+
+							buf.add(line);
+							mode = BASIC;
+							break;
+						}
+
+						buf.add(line);
+						break;
+					*/
+
+				}
+
+			}
+
+			String str="";
+			for(int j = 0; j < buf.size(); j++)
+				str = str.concat("\n"+ buf.get(j));  //
+			System.out.println(str);
+			Node node = new Node(str);
+			doc.addNode(node);
+
+			br.close();
+		}catch(IOException e){}
+
+		return doc;
+	}
 
 }
