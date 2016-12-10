@@ -1,1 +1,124 @@
-<?xml version = "1.0" ?><project name = "Project" default = "package" xmlns:jacoco="antlib:org.jacoco.ant">  <path id="classpath.test">    <pathelement location="lib/junit-4.12.jar"/>    <pathelement location="lib/hamcrest-core-1.3.jar"/>  </path>  <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">      <classpath path="lib/jacocoant.jar" />   </taskdef>  <target name = "init">  <mkdir dir = "src" />  <mkdir dir = "testsrc"/>  <mkdir dir = "build" />  <mkdir dir = "build/classes" />  <mkdir dir = "lib" />  <mkdir dir = "doc" />  <mkdir dir = "test" />  <mkdir dir = "test/testclasses" />  <mkdir dir = "test/testreports" />  <mkdir dir = "test/jacocoreports"/>  <mkdir dir = "dist" /> </target> <target name = "compile" depends = "init"    description = "Compile Java code" >   <javac srcdir = "src" destdir = "build/classes" classpathref = "classpath.test" /> </target> <target name = "test_compile" depends = "compile"    description = "Compile Test Java code" >   <javac srcdir = "testsrc" destdir = "test/testclasses" classpathref = "classpath.test" /> </target> <target name = "test" depends = "test_compile"   description = "Run unit tests">  <junit printsummary = "true" haltonfailure = "false">   <classpath>          <path refid="classpath.test"/>          <pathelement location="test/testclasses"/>         </classpath>   <formatter type = "plain" />   <formatter type = "xml" />   <batchtest todir = "test/testreports" >    <fileset dir = "test/testclasses" />   </batchtest>  </junit> </target> <target name="cov-test" depends ="test" description = "cov-test">  <jacoco:coverage>   <junit showoutput="true" printsummary="on" enabletestlistenerevents="true" fork="true">    <classpath path="test/testclasses" />    <classpath path="lib/junit-4.12.jar" />    <classpath path="lib/hamcrest-core-1.3.jar" />    <formatter type="plain" usefile="false" />    <test name="ExecuteCommandReader">    </test>   </junit>  </jacoco:coverage>  <jacoco:coverage>   <java classname="ExecuteCommandReader" fork="true">    <classpath path="test/testclasses" />   </java>  </jacoco:coverage> </target> <target name="report" description="Collect Coverage Report" depends= "cov-test">        <!-- Creates the Junit Report -->        <junitreport todir="test/jacocoreports">            <fileset dir="test/testreports">                <include name="*.xml"/>            </fileset>            <report format="frames" todir="test/jacocoreports"/>        </junitreport>        <!-- Creates the coverage Report.-->        <mkdir dir="test/jacocoreports/coverage"/>        <jacoco:report>            <executiondata>                <file file="./jacoco.exec" />            </executiondata>            <structure name="Code Coverage">                <classfiles>     <fileset dir="test/testclasses" />    </classfiles>    <sourcefiles>     <fileset dir="testsrc" />    </sourcefiles>            </structure>            <html destdir="test/jacocoreports/coverage" />        </jacoco:report>    </target>      <target name = "package" depends = "report"    description = "Generate JAR file">   <jar destfile = "dist/MD_HTML_Converter.jar"      basedir = "build/classes">     <zipgroupfileset dir="lib" includes="jtidy-r938.jar"/>     <manifest>      <attribute name="Class-Path"        value="jtidy-r938.jar"/>      <attribute name="Main-Class"        value="ExecuteCommandReader"/>     </manifest>   </jar> </target> <target name="clean" depends="init"    description = "Deletes classes directiories">   <delete dir = "build/classes"/>   <delete dir = "test/testclasses"/>   <delete dir = "test/testreports"/> </target> </project>
+<?xml version = "1.0" ?>
+<project name = "Project" default = "package" xmlns:jacoco="antlib:org.jacoco.ant">
+
+  <path id="classpath.test">
+    <pathelement location="lib/junit-4.12.jar"/>
+    <pathelement location="lib/hamcrest-core-1.3.jar"/>
+  </path>
+
+  <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml"> 
+     <classpath path="lib/jacocoant.jar" /> 
+  </taskdef> 
+
+	<target name = "init">
+		<mkdir dir = "src" />
+		<mkdir dir = "testsrc"/>
+		<mkdir dir = "build" />
+		<mkdir dir = "build/classes" />
+		<mkdir dir = "lib" />
+		<mkdir dir = "doc" />
+		<mkdir dir = "test" />
+		<mkdir dir = "test/testclasses" />
+		<mkdir dir = "test/testreports" />
+		<mkdir dir = "test/jacocoreports"/>
+		<mkdir dir = "dist" />
+	</target>
+
+	<target name = "compile" depends = "init" 
+			description = "Compile Java code" >
+			<javac srcdir = "src" destdir = "build/classes" classpathref = "classpath.test" />
+	</target>
+
+	<target name = "test_compile" depends = "compile" 
+			description = "Compile Test Java code" >
+			<javac srcdir = "testsrc" destdir = "test/testclasses" classpathref = "classpath.test" />
+	</target>
+
+	<target name = "test" depends = "test_compile"
+			description = "Run unit tests">
+		<junit printsummary = "true" haltonfailure = "false">
+			<classpath>
+	        	<path refid="classpath.test"/>
+	        	<pathelement location="test/testclasses"/>
+	        </classpath>
+			<formatter type = "plain" />
+			<formatter type = "xml" />
+			<batchtest todir = "test/testreports" >
+				<fileset dir = "test/testclasses" />
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="cov-test" depends ="test" description = "cov-test">
+		<jacoco:coverage>
+			<junit showoutput="true" printsummary="on" enabletestlistenerevents="true" fork="true">
+				<classpath path="test/testclasses" />
+				<classpath path="lib/junit-4.12.jar" />
+				<classpath path="lib/hamcrest-core-1.3.jar" />
+				<formatter type="plain" usefile="false" />
+				<test name="ExecuteCommandReader">
+				</test>
+			</junit>
+		</jacoco:coverage>
+
+		<jacoco:coverage>
+			<java classname="ExecuteCommandReader" fork="true">
+				<classpath path="test/testclasses" />
+			</java>
+		</jacoco:coverage>
+	</target>
+
+	<target name="report" description="Collect Coverage Report" depends= "cov-test">
+
+        <!-- Creates the Junit Report -->
+        <junitreport todir="test/jacocoreports">
+            <fileset dir="test/testreports">
+                <include name="*.xml"/>
+            </fileset>
+            <report format="frames" todir="test/jacocoreports"/>
+        </junitreport>
+
+        <!-- Creates the coverage Report.-->
+        <mkdir dir="test/jacocoreports/coverage"/>
+        <jacoco:report>
+            <executiondata>
+                <file file="./jacoco.exec" />
+            </executiondata>
+
+
+            <structure name="Code Coverage">
+                <classfiles>
+					<fileset dir="test/testclasses" />
+				</classfiles>
+				<sourcefiles>
+					<fileset dir="testsrc" />
+				</sourcefiles>
+            </structure>
+            <html destdir="test/jacocoreports/coverage" />
+        </jacoco:report>
+
+    </target>
+    	
+
+	<target name = "package" depends = "report" 
+			description = "Generate JAR file">
+			<jar destfile = "dist/MD_HTML_Converter.jar" 
+				 basedir = "build/classes">
+				 <zipgroupfileset dir="lib" includes="jtidy-r938.jar"/>
+				 <manifest>
+				 	<attribute name="Class-Path" 
+				 		value="jtidy-r938.jar"/>
+				 	<attribute name="Main-Class" 
+				 		value="ExecuteCommandReader"/>
+				 </manifest>
+			</jar>
+	</target>
+
+	<target name="clean" depends="init" 
+			description = "Deletes classes directiories">
+			<delete dir = "build/classes"/>
+			<delete dir = "test/testclasses"/>
+			<delete dir = "test/testreports"/>
+	</target>
+	
+</project>
