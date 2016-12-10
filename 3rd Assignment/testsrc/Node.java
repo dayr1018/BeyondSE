@@ -45,96 +45,36 @@ class Header extends Node{
 
 	String getString()
  	{
-/*
-		mEm = pEm.matcher(string);
-		mStrong = pStrong.matcher(string);
-		String str = "\\";
 
-		if(mEm.find())
-		{
-			str = str.concat(mEm.group());
-			str = str.substring(0, str.length()-1);
-			str = str.concat("\\*");
 
-			strArr = string.split(str);
 
-			Emphasis emToken = new Emphasis(str);
-
-			System.out.println("1111111111111111111" + emToken.getString());
-
-			string = strArr[0] + emToken.getString() + strArr[1];
-
-			System.out.println(string);
-		}
-
-		if(mStrong.find())
-		{
-			strArr = string.split(mStrong.group());
-			Strong stToken = new Strong(mStrong.group());
-			string = strArr[0] + stToken.getString() + strArr[1];
-		}
-*/
-
-/*
-		mTotal = pTotal.matcher(string);
-		mCount = pTotal.matcher(string);
-		int cnt = 0;
-
-		while(mCount.find()) cnt++;
-
-		if(mTotal.find())
-		{
-			System.out.println("!!!!!!!!!!!!!!!!!!!" + cnt);
-			for(int i = 0; i < cnt; i++)
-			{
-				strArr = string.split(mTotal.group(i));
-				System.out.println(strArr[0] + "2222222" + strArr[1]);
-
-				mEm = pEm.matcher(mTotal.group(i));
-				mStrong = pStrong.matcher(mTotal.group(i));
-
-				if(mEm.find())
-				{
-					Emphasis emToken = new Emphasis(mTotal.group());
-					string = strArr[0] + emToken.getString() + strArr[1];
-				}
-				if(mStrong.find())
-				{
-					Strong stToken = new Strong(mStrong.group());
-					string = strArr[0] + stToken.getString() + strArr[1];
-				}
-
-			}
-		}
-*/
-
-      if(string.charAt(5)=='#' && string.charAt(4)=='#' && string.charAt(3)=='#' && string.charAt(2)=='#' && string.charAt(1)=='#' && string.charAt(0)=='#') {
-         string = string.substring(7, string.length());  //string = string.substring(6);
-         return ("<h6>" + string.toString() + "</h6>");
-      }
-      else if(string.charAt(4)=='#' && string.charAt(3)=='#' && string.charAt(2)=='#' && string.charAt(1)=='#' && string.charAt(0)=='#') {
-         string = string.substring(6, string.length());  //string = string.substring(5);
-         return ("<h5>" + string.toString() + "</h5>");
-      }
-      else if(string.charAt(3)=='#' && string.charAt(2)=='#' && string.charAt(1)=='#' && string.charAt(0)=='#') {
-         string = string.substring(5, string.length());  //string = string.substring(4);
-         return ("<h4>" + string.toString() + "</h4>");
-      }
-      else if(string.charAt(2)=='#' && string.charAt(1)=='#' && string.charAt(0)=='#') {
-         string = string.substring(4, string.length());  //string = string.substring(3);
-         return ("<h3>" + string.toString() + "</h3>");
-      }
-      else if(string.charAt(1)=='#' && string.charAt(0)=='#') {
-         string = string.substring(3, string.length());  //string = string.substring(2);
-         return ("<h2>" + string.toString() + "</h2>");
-      }
-      else if(string.charAt(0)=='#'){
-         string = string.substring(2, string.length());  //string = string.substring(1);
-         return ("<h1>" + string.toString() + "</h1>");
-      }
-      else
-         return ("<h1>" + string.toString() + "</h1>");
-    }
+	      if(string.charAt(5)=='#' && string.charAt(4)=='#' && string.charAt(3)=='#' && string.charAt(2)=='#' && string.charAt(1)=='#' && string.charAt(0)=='#') {
+		 string = string.substring(6, string.length());  //string = string.substring(6);
+		 return ("<h6>" + string.toString() + "</h6>");
+	      }
+	      else if(string.charAt(4)=='#' && string.charAt(3)=='#' && string.charAt(2)=='#' && string.charAt(1)=='#' && string.charAt(0)=='#') {
+		 string = string.substring(5, string.length());  //string = string.substring(5);
+		 return ("<h5>" + string.toString() + "</h5>");
+	      }
+	      else if(string.charAt(3)=='#' && string.charAt(2)=='#' && string.charAt(1)=='#' && string.charAt(0)=='#') {
+		 string = string.substring(4, string.length());  //string = string.substring(4);
+		 return ("<h4>" + string.toString() + "</h4>");
+	      }
+	      else if(string.charAt(2)=='#' && string.charAt(1)=='#' && string.charAt(0)=='#') {
+		 string = string.substring(3, string.length());  //string = string.substring(3);
+		 return ("<h3>" + string.toString() + "</h3>");
+	      }
+	      else if(string.charAt(1)=='#' && string.charAt(0)=='#') {
+		 string = string.substring(2, string.length());  //string = string.substring(2);
+		 return ("<h2>" + string.toString() + "</h2>");
+	      }
+	      else if(string.charAt(0)=='#'){
+		 string = string.substring(1, string.length());  //string = string.substring(1);
+		 return ("<h1>" + string.toString() + "</h1>");
+	      }
+	      else
+		 return ("<h1>" + string.toString() + "</h1>");
+	 }
 }
 
 class CodeBlock extends Node{
