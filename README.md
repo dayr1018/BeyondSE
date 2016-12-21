@@ -1,5 +1,8 @@
 #\*literal asterisks\*
 
+*asd
+*asd
+
 >asd
 >>Asd
 
